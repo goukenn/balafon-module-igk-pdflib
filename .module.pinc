@@ -1,0 +1,24 @@
+<?php
+// @author: C.A.D. BONDJE DOUE
+// @file: %modules%/igk/pdflib/.module.pinc.php
+// @date: 20220309 14:42:33
+namespace igk\pdflib;
+
+
+// + module definition
+return [
+//------------------------------------------------
+// define entry name space
+//
+"entry_NS"=>\igk\pdflib::class,
+
+//------------------------------------------------
+// version
+//
+"version"=>"1.0",
+
+//-------------------------------------------------
+// author
+//
+"author"=>"C.A.D. BONDJE DOUE"
+];
