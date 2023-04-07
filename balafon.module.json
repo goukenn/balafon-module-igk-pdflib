@@ -2,5 +2,13 @@
     "name": "igk/pdflib",
     "author": "C.A.D. BONDJE DOUE",
     "version": "1.5",
-    "require": null
+    "require": null,
+    "extern_library": [
+        {
+            "fpdf": {
+                "version": "1.85",
+                "source":"http://www.fpdf.org/"
+            }
+        }
+    ]
 }

@@ -4,6 +4,8 @@
 // @date: 20220309 14:42:33
 namespace igk\pdflib;
 
+require_once igk_io_packagesdir().'/Lib/Fpdf/fpdf.php';
+
 
 // + module definition
 return [
