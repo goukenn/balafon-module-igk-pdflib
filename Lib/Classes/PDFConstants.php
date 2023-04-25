@@ -12,4 +12,6 @@ class PDFConstants{
 
     const FILE_VERSION_1_7 = '1.7';
     const FILE_VERSION_2_0 = '2.0';
+
+    const CREATOR_TOOL_NAME = 'igk\pdflib';
 }

@@ -5,10 +5,156 @@
 // @desc: pdf utility
 
 namespace igk\pdflib;
+
+use IGK\Helper\StringUtility;
 use IGK\System\Drawing\Color;
 use IGK\System\Html\Css\CssParser;
 
 class PDFUtils{
+
+    private static function _ReadArray(string $str, &$pos){
+        $len  = strlen($str);
+        $depth = 1;
+        $v = '';
+        while ($pos < $len) {
+            $ch = $str[$pos];
+            switch($ch){
+                case '[':
+                    $depth++;
+                    break;
+                case ']':
+                    $depth--;
+                    if ($depth==0){
+                        return $v;
+                    }
+                    break;
+
+            }
+            $v.=$ch;
+            $pos++;
+        }
+        return $v;
+    }
+    /**
+     * 
+     */
+    public static function ReadDictionary(string $str){
+        $rdic = [];
+        $n = 0;
+        $v = '';
+        $pos = 0; 
+        $depth = 0;
+        $buffer = [];
+       
+
+        while ($pos < strlen($str)) {
+            $ch = $str[$pos];
+            if (($ch!='0') && empty(trim($ch)))
+                $ch = ' ';
+
+            $pos++;
+            switch ($v) {
+                case '<<':
+                    $mode = 1;
+                    $depth++;
+                    $v = '';
+                    if ($n) {
+                        // push direction 
+                        $ctab = [];
+                        $rdic[$n] = $ctab;
+                        array_unshift($buffer, $rdic);
+                        $rdic = $ctab;
+                        $n = '';
+                    }
+    
+    
+                    break;
+                case '>>':
+                    $depth--;
+                    $v = '';
+                    if ($depth == 0) {
+                        $mode = 0;
+                        $end = true;
+                    }
+                    $qdic = array_shift($buffer);
+                    if ($qdic) {
+                        $key = array_key_last($qdic);
+                        $qdic[$key] = $rdic;
+                        $rdic = $qdic;
+                    }
+                    break;
+                case '/':
+                    // if (!empty($rv = trim($v))){
+                    //     $rdic[$n] = $rv;
+                    // }
+                    //read name
+                    $n = $ch . StringUtility::ReadIdentifier($str, $pos); // _read_name()
+                    $v = '';
+                    $ch = '';
+                    break;
+                default:
+                    switch ($ch) {
+                        case '(':
+                            $pos--;
+                            $rv = igk_str_read_brank($str, $pos, ')', '(');
+                            if (!empty($n)){
+                                $rdic[$n] = $rv;
+                                $ch = '';
+                                $v = '';
+                                $n = '';
+                            }
+                            $pos++;
+                            
+                            break;
+                        case '[':    
+                            $g = self::_ReadArray($str, $pos);                        
+                            $g = preg_replace("/\s+/", " ",  trim($g));
+                            
+                            $g = array_map(function($a){ 
+                                return $a;
+                            }, array_filter(explode (' ', $g)));
+                            if ($n){
+                                $rdic[$n] = $g;
+                                $v ="";
+                                $ch='';
+                                $n = '';
+                            }
+                            $pos++;
+                            break;
+                        default:
+    
+                            if (($v != '<') && ($v != '>')) {
+                                //'/ <>[]'
+                                if (strpos('/<>[]', $ch) !== false) {
+                                    if (!empty($rv = trim($v))) {
+                                        $rdic[$n] = is_numeric($rv) ? floatval($rv) : $rv;
+                                        $v = '';
+                                        $n = '';
+                                    } else {
+                                        $v = $rv;
+                                        if ($ch == '/') {
+                                            if (!empty($n)) {
+                                                $rdic[$n] = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                    }
+                    break;
+            }
+            $v .= $ch;
+        }
+        if (!empty($n)) {
+            $prv = true;
+            if (!empty($rv = trim($v))) {
+                $prv = is_numeric($rv) ? floatval($rv) : $rv;
+            }
+            $rdic[$n] = $prv;
+        }
+        return $rdic;
+    }
+
 
     public static function GetStyleInfo($node, $document){
         $prop = new PDFCssProperties();

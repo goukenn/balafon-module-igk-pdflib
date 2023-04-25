@@ -33,7 +33,7 @@ abstract class PDFFileFactory {
             return new $cl(...$args);
         return null;
     }
-    public static function CreateType(string $name){
+    public static function CreateType(string $name, ...$args){
         $def = & self::_GetDef();
         
         if (!($cl = igk_getv($def, $name))){
@@ -44,7 +44,7 @@ abstract class PDFFileFactory {
             else $cl = null;
         }
         if ($cl)
-            return new $cl();
+            return new $cl(...$args);
         return null;
     }
 }

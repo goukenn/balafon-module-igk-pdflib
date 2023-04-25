@@ -25,7 +25,15 @@ class PDFFileNamedObject{
         } else if ($s instanceof PDFFileObject){
             $s = $s->getRef();
         }
-        return trim(sprintf('/%s %s', $this->name, trim($s.'')));
+        if ($s = trim($s.'')){
+            if (strpos('(<{/[', $s[0]) ===false){
+                $s = ' '.$s;
+            } 
+            // else {
+            //     $s = ' ----- '.$s;
+            // }
+        }
+        return trim(sprintf('/%s%s', $this->name, $s));
     }
     public function __toString(){
         return $this->render();

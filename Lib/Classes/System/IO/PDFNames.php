@@ -17,8 +17,7 @@ abstract class PDFNames{
     const Type2='Type2';
     const TrueType='TrueType';
     const Font='Font';
-    const Length='Length';
-    const DecodeParms='DecodeParms';
+    const Length='Length'; 
     const F='F';
     const Filter='Filter';
     const FFilter='FFilter';
@@ -29,13 +28,19 @@ abstract class PDFNames{
     const Resources='Resources';
     const Kids='Kids';
     const Count='Count';
+    
+    // box definition names
     const MediaBox='MediaBox';
+    const CropBox='CropBox';
+    const BlendBox='BlendBox';
+    const TrimBox='TrimBox';
+    const ArtBox='ArtBox';
+
     const BaseType='BaseType';
     const BBox='BBox';
     const Subtype='Subtype';
 
-    const ASCII85Decode = 'ASCII85Decode';
-    const LZWDecode = 'LZWDecode';
+
     const EndOfLine = 'EndOfLine';
 
     //trailer
@@ -47,6 +52,7 @@ abstract class PDFNames{
     const Pages='Pages';
     const Contents='Contents';
     const BaseFont='BaseFont';
+    const Group='Group';
     const F1='F1';
     const F2='F2';
     const F3='F3';
@@ -64,12 +70,12 @@ abstract class PDFNames{
     const Height='Height';
     const ColorSpace='ColorSpace';
     const DeviceRGB='DeviceRGB';
+    const DeviceCMYK='DeviceCMYK';
     const DeviceGray='DeviceGray';
     const BitsPerComponent='BitsPerComponent';
     const Colors='Colors';
     const Predictor='Prdictor';
-    const Columns='Columns';
-    const DCTDecode='DCTDecode';
+    const Columns='Columns'; 
 
     const ENDFILE = '%%EOF';
     const obj = 'obj';
@@ -91,4 +97,26 @@ abstract class PDFNames{
 
     const endstream = 'endstream';
     const stream = 'stream';
+
+    const XML = 'XML';
+
+    // + | FILTER
+    const ASCIIHexDecode = 'ASCIIHexDecode';
+    const ASCII85Decode  = 'ASCII85Decode';
+    const LZWDecode  = 'LZWDecode'; 
+    const FlateDecode  = 'FlateDecode';
+    const RunLengthDecode  = 'RunLengthDecode';
+    const CCITTFaxDecode  = 'CCITTFaxDecode';
+    const JBIG2Decode  = 'JBIG2Decode';
+    const DCTDecode  = 'DCTDecode';
+    const JPXDecode  = 'JPXDecode';
+    const Crypt  = 'Crypt';
+    const DecodeParms  = 'DecodeParms';
+
+
+    const FT_HELVETICA = 'Helvetica';
+
+    const Transparency = 'Transparency';
+    const S = 'S';
+    const CS = 'CS';
 }

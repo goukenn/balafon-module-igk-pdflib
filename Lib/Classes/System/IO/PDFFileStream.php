@@ -17,7 +17,8 @@ class PDFFileStream extends PDFFileObject implements IPDFFileStream
     public function streamDefinition(): string{     
         $sb = new StringBuilder;
         $sb->appendLine(PDFNames::stream);
-        $sb->appendLine($this->value);
+        if (!empty($this->value))
+            $sb->appendLine($this->value);
         $sb->append(PDFNames::endstream);
         return $sb;
     }
@@ -28,5 +29,11 @@ class PDFFileStream extends PDFFileObject implements IPDFFileStream
      */
     public function append($d){
         return parent::append($d);
+    }
+    public function initialize(){
+        parent::initialize();
+        $this->addName(PDFNames::Length)->value = function(){
+            return strlen($this->value);
+        };
     }
 }

@@ -23,3 +23,15 @@ $srv->output();
 ```
 
 
+# loading font to page
+```php
+$ft = $file->addFont();
+$this->m_current_page->addName(PDFNames::Contents)->value = $content;
+$g = new PDFFileNamedObject('F13');
+$g->value = $ft; 
+$fdic = new PDFFileDictionary;
+$fdic->inline = true;
+$fdic->add($g);
+$file->currentPage()->getResources()->value->addName(PDFNames::Font)->value = $fdic;
+``
+

@@ -20,6 +20,7 @@ class PDFFileObject extends PDFFileRefObject
      * @var array|PDFFileDictionary
      */
     protected $m_dictionary;
+    var $inline;
     public function __construct(){
         $this->initialize();
     }
@@ -39,11 +40,25 @@ class PDFFileObject extends PDFFileRefObject
         $this->m_dictionary->add($data);
         return $data;
     }
+    /**
+     * 
+     * @param string $name 
+     * @return PDFFileNamedObject 
+     */
     public function addName(string $name){
         $n = new PDFFileNamedObject($name);
         $this->m_dictionary->add($n);
         return $n;
     }
+    public function getDictionaryEntry(string $name){
+        if ($this->m_dictionary instanceof PDFFileDictionary){
+            return $this->m_dictionary->getDictionaryEntry($name);
+        }
+       return null;
+    }
+    /**
+     * add item to dictionary
+     */
     public function add($item){
         $this->m_dictionary->add($item);
         return $item;
@@ -52,7 +67,7 @@ class PDFFileObject extends PDFFileRefObject
     {
         $sb = new StringBuilder;
         $sb->appendLine(sprintf("%s %s %s", $this->numberId, $this->buildId, PDFNames::obj));
-        if ($this->m_dictionary){
+        if ($this->m_dictionary && ($this->m_dictionary->count()> 0)){
             if (!empty($g = trim($this->m_dictionary->render() ?? ''))){
                 $sb->appendLine($g);
             }

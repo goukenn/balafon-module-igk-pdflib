@@ -20,4 +20,7 @@ class PDFFileRefValue{
     {
         $this->value = $obj;
     }
+    public function render(){
+        return $this->value->getRef();
+    }
 }
